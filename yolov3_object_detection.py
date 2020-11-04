@@ -37,6 +37,7 @@ import os
 import sys
 
 try:
+    #sys.path.append(glob.glob('../carla/dist/carla-*%d.%d-%s.egg' % (
     sys.path.append(glob.glob('../carla/dist/carla-*%d.%d-%s.egg' % (
         sys.version_info.major,
         sys.version_info.minor,
@@ -124,7 +125,8 @@ class BasicSynchronousClient(object):
         """
 
         car_bp = self.world.get_blueprint_library().filter('vehicle.*')[0]
-        location = random.choice(self.world.get_map().get_spawn_points())
+        #Spawn near to a Traffic sign
+        location = carla.Transform(carla.Location(x=240.817612, y=53.589058, z=0.300000), carla.Rotation(pitch=0.000000, yaw=88.605339, roll=0.000000))
         self.car = self.world.spawn_actor(car_bp, location)
 
     def setup_camera(self):
@@ -249,9 +251,11 @@ class BasicSynchronousClient(object):
                     pred_bbox = np.concatenate([np.reshape(pred_sbbox, (-1, 5 + num_classes)),
                                                 np.reshape(pred_mbbox, (-1, 5 + num_classes)),
                                                 np.reshape(pred_lbbox, (-1, 5 + num_classes))], axis=0)
-            
+                    
                     bboxes =  utils.postprocess_boxes(pred_bbox, frame_size, input_size, 0.3)
                     bboxes =  utils.nms(bboxes, 0.45, method='nms')
+
+                    bboxes = sign.filter_traffic_sign(bboxes)
                     sign.process_traffic_sign(frame, bboxes)
                     utils.draw_bounding_boxes(pygame, self.display,  self.raw_image, bboxes)
                     
@@ -260,7 +264,6 @@ class BasicSynchronousClient(object):
                     pygame.event.pump()
                     if self.control(self.car):
                         return
-
         finally:
             self.set_synchronous_mode(False)
             self.camera.destroy()
