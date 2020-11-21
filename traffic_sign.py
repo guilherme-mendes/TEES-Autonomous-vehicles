@@ -34,6 +34,8 @@ class Sign:
 
         if(signs.shape[0] > 0 and signs.shape[1] > 0):
             cv2.imshow("Traffic Sign", signs)
+            for i in range(34, 44): 
+                cv2.imwrite('data/traffic_sign_{}.jpg'.format(i+1), signs)
             cv2.waitKey(1)# & 0xFF
 
     def filter_traffic_sign(self, bboxes):

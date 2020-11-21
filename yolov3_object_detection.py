@@ -126,7 +126,8 @@ class BasicSynchronousClient(object):
 
         car_bp = self.world.get_blueprint_library().filter('vehicle.*')[0]
         #Spawn near to a Traffic sign
-        location = carla.Transform(carla.Location(x=240.817612, y=53.589058, z=0.300000), carla.Rotation(pitch=0.000000, yaw=88.605339, roll=0.000000))
+        #location = carla.Transform(carla.Location(x=240.817612, y=53.589058, z=0.300000), carla.Rotation(pitch=0.000000, yaw=88.605339, roll=0.000000))
+        location = random.choice(self.world.get_map().get_spawn_points())
         self.car = self.world.spawn_actor(car_bp, location)
 
     def setup_camera(self):
