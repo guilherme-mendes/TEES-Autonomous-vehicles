@@ -217,7 +217,7 @@ class BasicSynchronousClient(object):
             
             self.client = carla.Client('127.0.0.1', 2000)
             self.client.set_timeout(2.0)
-            self.world = self.client.get_world()
+            self.world = self.client.load_world('Town05')
 
             self.setup_car()
             self.setup_camera()
