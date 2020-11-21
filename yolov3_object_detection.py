@@ -126,8 +126,8 @@ class BasicSynchronousClient(object):
 
         car_bp = self.world.get_blueprint_library().filter('vehicle.*')[0]
         #Spawn near to a Traffic sign
-        #location = carla.Transform(carla.Location(x=240.817612, y=53.589058, z=0.300000), carla.Rotation(pitch=0.000000, yaw=88.605339, roll=0.000000))
-        location = random.choice(self.world.get_map().get_spawn_points())
+        location = carla.Transform(carla.Location(x=-246.670059, y=-3.667096, z=-0.009936), carla.Rotation(pitch=0.018756, yaw=174.198608, roll=-0.063385)) 
+        # location = random.choice(self.world.get_map().get_spawn_points())
         self.car = self.world.spawn_actor(car_bp, location)
 
     def setup_camera(self):
@@ -158,6 +158,8 @@ class BasicSynchronousClient(object):
 
         keys = pygame.key.get_pressed()
         if keys[K_ESCAPE]:
+            # self.camera.destroy()
+            # self.car.destroy()
             return True
 
         control = car.get_control()
@@ -218,7 +220,8 @@ class BasicSynchronousClient(object):
             
             self.client = carla.Client('127.0.0.1', 2000)
             self.client.set_timeout(2.0)
-            self.world = self.client.get_world()
+            #self.world = self.client.get_world()
+            self.world = self.client.load_world('Town05')
 
             self.setup_car()
             self.setup_camera()
@@ -283,6 +286,7 @@ def main():
     """
 
     try:
+        
         return_elements = ["input/input_data:0", "pred_sbbox/concat_2:0", "pred_mbbox/concat_2:0", "pred_lbbox/concat_2:0"]
         pb_file         = "tensorflow_yolov3/yolov3_coco.pb"
         

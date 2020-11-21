@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 from tensorflow_yolov3.carla.config import cfg
 from tensorflow_yolov3.carla.utils import read_class_names
+import os
+import time
 
 
 class Sign:
@@ -21,22 +23,22 @@ class Sign:
             return
         else:
             bbox = bboxes[0]
-            print("Score = {}, Label = {}".format(bbox[4], self.classes[bbox[5]]))
             self.bbx.append([int(bbox[1]), int(bbox[3]), int(bbox[0]) , int(bbox[2])])
             self.scores.append(bbox[4])
     
     def process_traffic_sign(self, frame, bboxes):
-        self.getScore_Label(bboxes)
-        signs = np.zeros_like(frame)
-        for i in self.bbx:
-            print(i)
-            signs = frame[i[0]:i[1], i[2]:i[3]]
+        if len(bboxes) != 0:
+            self.getScore_Label(bboxes)
+            signs = np.zeros_like(frame)
+            for i in self.bbx:
+                signs = frame[i[0]:i[1], i[2]:i[3]]
 
-        if(signs.shape[0] > 0 and signs.shape[1] > 0):
-            cv2.imshow("Traffic Sign", signs)
-            for i in range(34, 44): 
-                cv2.imwrite('data/traffic_sign_{}.jpg'.format(i+1), signs)
-            cv2.waitKey(1)# & 0xFF
+            if(signs.shape[0] > 0 and signs.shape[1] > 0):
+                cv2.imshow("Traffic Sign", signs)
+                qtd = len(os.listdir('./data/'))
+                for i in range(10): 
+                    cv2.imwrite('data/traffic_sign_{}_{}.jpg'.format(qtd ,i+1), signs)
+                cv2.waitKey(1)# & 0xFF
 
     def filter_traffic_sign(self, bboxes):
         for i, bbox in enumerate(bboxes):
