@@ -3,7 +3,10 @@ import cv2
 import numpy as np
 from tensorflow_yolov3.carla.config import cfg
 from tensorflow_yolov3.carla.utils import read_class_names
+import os
 import time
+
+from image_convert import image_to_string
 
 
 class Sign:
@@ -32,11 +35,12 @@ class Sign:
             for i in self.bbx:
                 signs = frame[i[0]:i[1], i[2]:i[3]]
 
-            if(signs.shape[0] > 0 and signs.shape[1] > 0):
-                timestr = time.strftime("%Y%m%d-%H%M%S")
-                cv2.imshow("Traffic Sign", signs)
-                cv2.imwrite('data/traffic_sign_{}.jpg'.format(timestr), signs)
-                cv2.waitKey(1)# & 0xFF
+            if(signs.shape[0] > 20 and signs.shape[1] > 20):
+                # timestr = time.strftime("%Y%m%d-%H%M%S")
+                # cv2.imshow("Traffic Sign", signs)
+                # cv2.imwrite('data/traffic_sign_{}.jpg'.format(timestr), signs)
+                # cv2.waitKey(1)# & 0xFF
+                return image_to_string(signs)
 
     def filter_traffic_sign(self, bboxes):
         for i, bbox in enumerate(bboxes):

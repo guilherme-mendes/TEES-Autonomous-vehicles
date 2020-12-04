@@ -36,6 +36,7 @@ import glob
 import os
 import sys
 
+
 try:
     #sys.path.append(glob.glob('../carla/dist/carla-*%d.%d-%s.egg' % (
     sys.path.append(glob.glob('../carla/dist/carla-*%d.%d-%s.egg' % (
@@ -77,6 +78,8 @@ MAX_FPS = None
 VIEW_FOV = 90
 
 BB_COLOR = (248, 64, 24)
+
+os.system('cls' if os.name == 'nt' else 'clear')
 
 # ==============================================================================
 # -- BasicSynchronousClient ----------------------------------------------------
@@ -126,7 +129,7 @@ class BasicSynchronousClient(object):
 
         car_bp = self.world.get_blueprint_library().filter('vehicle.*')[0]
         #Spawn near to a Traffic sign
-        location = carla.Transform(carla.Location(x=-246.670059, y=-3.667096, z=-0.009936), carla.Rotation(pitch=0.018756, yaw=174.198608, roll=-0.063385)) 
+        #location = carla.Transform(carla.Location(x=-246.670059, y=-3.667096, z=-0.009936), carla.Rotation(pitch=0.018756, yaw=174.198608, roll=-0.063385)) 
         location = random.choice(self.world.get_map().get_spawn_points())
         self.car = self.world.spawn_actor(car_bp, location)
 
@@ -220,8 +223,8 @@ class BasicSynchronousClient(object):
             
             self.client = carla.Client('127.0.0.1', 2000)
             self.client.set_timeout(2.0)
-            #self.world = self.client.get_world()
-            self.world = self.client.load_world('Town05')
+            self.world = self.client.get_world()
+            #self.world = self.client.load_world('Town05')
 
             self.setup_car()
             self.setup_camera()
@@ -234,6 +237,8 @@ class BasicSynchronousClient(object):
             os.system('cls' if os.name == 'nt' else 'clear')
             sign = Sign()
             
+            aux = ''
+
             with tf.Session(graph=graph) as sess:
                 while True:
                     self.world.tick()
@@ -260,7 +265,18 @@ class BasicSynchronousClient(object):
                     bboxes =  utils.nms(bboxes, 0.45, method='nms')
 
                     bboxes = sign.filter_traffic_sign(bboxes)
-                    sign.process_traffic_sign(frame, bboxes)
+                    spt = str(sign.process_traffic_sign(frame, bboxes))
+                
+
+                    if(spt != 'None'):
+                        aux = spt
+                    basicfont = pygame.font.SysFont(None, 60)
+                    text_control = basicfont.render(aux, True, (0,0,0))
+                    textrec = text_control.get_rect()
+                    textrec.top = self.display.get_rect().top
+                    textrec.bottomleft = self.display.get_rect().bottomleft
+                    self.display.blit(text_control, textrec)
+
                     utils.draw_bounding_boxes(pygame, self.display,  self.raw_image, bboxes)
                     
                     pygame.display.flip()
