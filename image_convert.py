@@ -5,26 +5,26 @@ import glob
 import pytesseract as ocr
 
 escale = 5
+signs = {'T': 'Stop',
+		 'P': 'Stop',
+		 '3': 30,
+		 '6': 60,
+		 '9': 90}
 
 def image_to_string(img):
 
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 	im_pil = Image.fromarray(img)
 
-	image = Image.open(im_pil)
+	image = im_pil
 	width,height= image.size
 	#image.resize((width*escale,height*escale))
-	phrase = ocr.image_to_string(image)
+	result = ocr.image_to_string(image)
 
-	print(phrase)
+	for key in signs.keys():
+		if key in result:
+			print(signs[key])
+			return signs[key]
+			break
 
-	if('S' in phrase or 'T' in phrase or 'P' in phrase):
-		print('Stop')
-	elif('6' in phrase):
-		print('60')
-	elif('40' in phrase):
-		print('40')
-	elif('3' in phrase):
-		print('30')
-	else:
-		print('Não reconhecido')
+	# print(result)

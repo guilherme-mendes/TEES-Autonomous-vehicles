@@ -79,8 +79,7 @@ VIEW_FOV = 90
 
 BB_COLOR = (248, 64, 24)
 
-clear = lambda: os.system('cls')
-clear()
+os.system('cls' if os.name == 'nt' else 'clear')
 
 # ==============================================================================
 # -- BasicSynchronousClient ----------------------------------------------------
@@ -238,6 +237,8 @@ class BasicSynchronousClient(object):
             os.system('cls' if os.name == 'nt' else 'clear')
             sign = Sign()
             
+            aux = ''
+
             with tf.Session(graph=graph) as sess:
                 while True:
                     self.world.tick()
@@ -264,7 +265,18 @@ class BasicSynchronousClient(object):
                     bboxes =  utils.nms(bboxes, 0.45, method='nms')
 
                     bboxes = sign.filter_traffic_sign(bboxes)
-                    sign.process_traffic_sign(frame, bboxes)
+                    spt = str(sign.process_traffic_sign(frame, bboxes))
+                
+
+                    if(spt != 'None'):
+                        aux = spt
+                    basicfont = pygame.font.SysFont(None, 60)
+                    text_control = basicfont.render(aux, True, (0,0,0))
+                    textrec = text_control.get_rect()
+                    textrec.top = self.display.get_rect().top
+                    textrec.bottomleft = self.display.get_rect().bottomleft
+                    self.display.blit(text_control, textrec)
+
                     utils.draw_bounding_boxes(pygame, self.display,  self.raw_image, bboxes)
                     
                     pygame.display.flip()
@@ -327,3 +339,4 @@ if __name__ == '__main__':
     VIEW_HEIGHT = args["height"]
     MAX_FPS = args["fps_max"]
     main()
+
