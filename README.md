@@ -9,3 +9,17 @@ To run our model you need:
 We recomend that you use a virtual enviroment to install our requirements file and to use Python in 3.7 version, after that you can run our model
 
 3 - Install the requirements file and Python 3.7 
+
+### Screenshots 
+
+* #### 30km/h Speed Traffic Sign detection
+
+![img1](images/img1.PNG)
+
+* #### Stop Traffic Sign detection
+
+![img1](images/img2.PNG)
+
+* #### 90km/h Speed Traffic Sign detection
+
+![img1](images/img3.PNG)
