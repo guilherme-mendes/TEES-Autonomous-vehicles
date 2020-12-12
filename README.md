@@ -10,9 +10,13 @@ We recomend that you use a virtual enviroment to install our requirements file a
 
 3 - Install the requirements file and Python 3.7 
 
-## Article
+### Article
 
 You can acces the article of this project in this [link](https://www.overleaf.com/read/ygwyqtwchpxs)
+
+### Video apresentation
+
+You can acces the apresentation of this project in this [link](https://youtu.be/VsVs8WCsez0)
 
 ### Screenshots 
 
