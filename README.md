@@ -10,6 +10,10 @@ We recomend that you use a virtual enviroment to install our requirements file a
 
 3 - Install the requirements file and Python 3.7 
 
+## Article
+
+You can acces the article of this project in this [link](https://www.overleaf.com/read/ygwyqtwchpxs)
+
 ### Screenshots 
 
 * #### 30km/h Speed Traffic Sign detection
